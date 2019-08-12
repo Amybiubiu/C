@@ -13,5 +13,4 @@ int main() {
         x2 = (x1 + a / x1) / 2;
     }   
     printf("%f",x2);
-    printf("%f",x1);//ohmy julia
 }
