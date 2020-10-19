@@ -16,7 +16,7 @@ void ref(){
     r = i2;
     // i = 23; r->23
     i2 = 33;
-    cout<<r<<endl;  //24
+    cout<<r<<endl;  // 24
     const int &i3 = 2;
 }
 //const reference
@@ -43,6 +43,7 @@ int main(){
     r = i2;
     // i = 23;
     i2 = 33;
-    cout<<r<<endl;  //23
+    cout<<r<<endl; 
+    cout<<i<<endl; //23
     return 0;
 }
