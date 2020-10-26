@@ -72,33 +72,33 @@ void readFromFile(){
     chooseAlgorithm(list);
 }
 void chooseAlgorithm(vector<work>& list){
-    HRN(list);
-    // bool flag = true;
-    // int op2;
-    // while (flag)
-    // {
-    //     printf("选择调度算法(输入数字):1.FCFS, 2.SJF, 3.HRN 4.exit\n");
-    //     scanf("%d", &op2);
+    bool flag = true;
+    int op2;
+    while (flag)
+    {
+        printf("选择调度算法(输入数字):1.FCFS, 2.SJF, 3.HRN 4.exit\n");
+        scanf("%d", &op2);
 
-    //     switch (op2)
-    //     {
-    //     case 1:
-    //         FCFS(list);
-    //         break;
-    //     case 2:
-    //         SJF(list);
-    //         break;
-    //     case 3:
-    //         HRN(list);
-    //         break;
-    //     case 4:
-    //         flag = false;
-    //         break;
-    //     default:
-    //         printf("错误输入\n");
-    //         break;
-    //     }
-    // }
+        switch (op2)
+        {
+        case 1:
+            FCFS(list);
+            break;
+        case 2:
+            SJF(list);
+            break;
+        case 3:
+            HRN(list);
+            break;
+        case 4:
+            flag = false;
+            break;
+        default:
+            printf("错误输入\n");
+            flag = false;
+            break;
+        }
+    }
 }
 
 void show(vector<work> list)
@@ -191,22 +191,21 @@ void HRN(vector<work> list)
 
 int main()
 {
-    // int op1;
-    // printf("选择数据的来源:1.文件 2.输入\n");
-    // scanf("%d", &op1);
-    // switch (op1)
-    // {
-    // case 1:
-    //     readFromFile();
-    //     break;
-    // case 2:
-    //     inputJobData();
-    //     break;
-    // default:
-    //     printf("输入不合法\n");
-    //     break;
-    // }
-    readFromFile();
+    int op1;
+    printf("选择数据的来源:1.文件 2.输入\n");
+    scanf("%d", &op1);
+    switch (op1)
+    {
+    case 1:
+        readFromFile();
+        break;
+    case 2:
+        inputJobData();
+        break;
+    default:
+        printf("输入不合法\n");
+        break;
+    }
       
     return 0;
 }
