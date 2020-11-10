@@ -1,66 +1,62 @@
 %{
+#include "scanner.h"
 int cur_line_num = 1;
+enum tokenType{
+    t_begin = 1, t_if, t_then, t_while, t_do, t_end,
+    t_letter_contain_digit, t_digit, t_add, t_subtraction,
+    t_mutiply, t_division, t_colon, t_colon_equal, t_less,
+    t_quotation, t_less_equal, t_more, t_more_equal, t_equal,
+    t_semicolon, t_left_parenthesis, t_right_parenthesis,
+};
 void init_scanner();
 void lex_error(char* msg, int line);
 void print_token(int token);
-typedef enum {
-    T_Le = 256, T_Ge, T_Eq, T_Ne, T_And, T_Or, T_IntConstant,
-    T_StringConstant, T_Identifier, T_Void, T_Int, T_While,
-    T_If, T_Else, T_Return, T_Break, T_Continue, T_Print,
-    T_ReadInt
-} TokenType;
 %}
 
-/* Definitions, note: \042 is '"' */
+/* Definitions */
 INTEGER             ([0-9]+)
-UNTERM_STRING       (\042[^\042\n]*)
-STRING              (\042[^\042\n]*\042)
-IDENTIFIER          ([_a-zA-Z][_a-zA-Z0-9]*)
-OPERATOR            ([+*-/%=,;!<>(){}])
-SINGLE_COMMENT1     ("//"[^\n]*)
-SINGLE_COMMENT2     ("#"[^\n]*)
+LETTER          ([_a-zA-Z][_a-zA-Z0-9]*)
 
 %%
 
-[\n]                { cur_line_num++;                       }
-[ \t\r\a]+          { /* ignore all spaces */               }
-{SINGLE_COMMENT1}   { /* skip for single line comment */    }
-{SINGLE_COMMENT2}   { /* skip for single line commnet */    }
-
-{OPERATOR}          { return yytext[0];         }   
-
-"<="                { return T_Le;              }
-">="                { return T_Ge;              }
-"=="                { return T_Eq;              }
-"!="                { return T_Ne;              }
-"&&"                { return T_And;             }
-"||"                { return T_Or;              }
-"void"              { return T_Void;            }
-"int"               { return T_Int;             }
-"while"             { return T_While;           }
-"if"                { return T_If;              }
-"else"              { return T_Else;            }
-"return"            { return T_Return;          }
-"break"             { return T_Break;           }
-"continue"          { return T_Continue;        }
-"print"             { return T_Print;           }
-"readint"           { return T_ReadInt;         }
-
-{INTEGER}           { return T_IntConstant;     }
-{STRING}            { return T_StringConstant;  }
-{IDENTIFIER}        { return T_Identifier;      }
+[\n]                { cur_line_num++; /* 忽略换行符 */        }
+[ \t\r\a]+          { /* 忽略空格符 */               }
+"begin"             {return t_begin;}
+"if"                {return t_if;}        
+"then"              {return t_then;}    
+"while"             {return t_while;}
+"do"                {return t_do;}
+"end"               {return t_end;}
+{LETTER}            {return t_letter_contain_digit;}
+{INTEGER}           {return t_digit;}
+"+"                 {return t_add;}
+"-"                 {return t_subtraction;}   
+"*"                 {return t_mutiply;}
+"/"                 {return t_division;}
+":"                 {return t_colon;}
+":+"                {return t_colon_equal;}
+"<"                 {return t_less;}
+"<>"                {return t_quotation;}
+"<="                {return t_less_equal;}
+">"                 {return t_more;}
+">="                {return t_more_equal;}
+"="                 {return t_equal;}
+";"                 {return t_semicolon;}
+"("                 {return t_left_parenthesis;}
+")"                 {return t_right_parenthesis;}
+"#"                 {return 0;}
 
 <<EOF>>             { return 0; }
 
-{UNTERM_STRING}     { lex_error("Unterminated string constant", cur_line_num);  }
-.                   { lex_error("Unrecognized character", cur_line_num);        }
+.                   { return -1; /* 不能识别的字符 */}
 
 %%
 
 int main(int argc, char* argv[]) {
     int token;
     init_scanner();
-    while (token = yylex()) {
+    while ((token = yylex())) {
+        // printf("%-20c", token);
         print_token(token);
         puts(yytext);
     }
@@ -73,7 +69,7 @@ void init_scanner() {
 }
 
 void print_token(int token) {
-    static char* token_strs[] = {
+    char* token_strs[] = {
         "T_Le", "T_Ge", "T_Eq", "T_Ne", "T_And", "T_Or", "T_IntConstant",
         "T_StringConstant", "T_Identifier", "T_Void", "T_Int", "T_While",
         "T_If", "T_Else", "T_Return", "T_Break", "T_Continue", "T_Print",
@@ -85,10 +81,6 @@ void print_token(int token) {
     } else {
         printf("%-20s", token_strs[token-256]);
     }
-}
-
-void lex_error(char* msg, int line) {
-    printf("\nError at line %-3d: %s\n\n", line, msg);
 }
 
 int yywrap(void) {
