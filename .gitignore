@@ -1,3 +1,6 @@
 /.vscode
 job
 job.dat
+scanner
+test.txt
+lex.yy.c
