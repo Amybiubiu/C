@@ -1,5 +1,4 @@
 %{
-#include "scanner.h"
 int cur_line_num = 1;
 enum tokenType{
     t_begin = 1, t_if, t_then, t_while, t_do, t_end,
@@ -16,12 +15,20 @@ void print_token(int token);
 /* Definitions */
 INTEGER             ([0-9]+)
 LETTER          ([_a-zA-Z][_a-zA-Z0-9]*)
+WC      [A-Za-z]
+NW      [^A-Za-z]
+%start      INW NIW
+
 
 %%
 
+
+{WC}  { BEGIN INW; REJECT; }
+{NW}  { BEGIN NIW; REJECT; }
+
 [\n]                { cur_line_num++; /* 忽略换行符 */        }
 [ \t\r\a]+          { /* 忽略空格符 */               }
-"begin"             {return t_begin;}
+begin               {return t_begin;}
 "if"                {return t_if;}        
 "then"              {return t_then;}    
 "while"             {return t_while;}
@@ -56,8 +63,7 @@ int main(int argc, char* argv[]) {
     int token;
     init_scanner();
     while ((token = yylex())) {
-        // printf("%-20c", token);
-        print_token(token);
+        printf("%-20d", token);
         puts(yytext);
     }
     return 0;
@@ -66,21 +72,6 @@ int main(int argc, char* argv[]) {
 void init_scanner() {
     printf("%-20s%s\n", "TOKEN-TYPE", "TOKEN-VALUE");
     printf("-------------------------------------------------\n");
-}
-
-void print_token(int token) {
-    char* token_strs[] = {
-        "T_Le", "T_Ge", "T_Eq", "T_Ne", "T_And", "T_Or", "T_IntConstant",
-        "T_StringConstant", "T_Identifier", "T_Void", "T_Int", "T_While",
-        "T_If", "T_Else", "T_Return", "T_Break", "T_Continue", "T_Print",
-        "T_ReadInt"
-    };
-
-    if (token < 256) {
-        printf("%-20c", token);
-    } else {
-        printf("%-20s", token_strs[token-256]);
-    }
 }
 
 int yywrap(void) {
