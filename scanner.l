@@ -8,23 +8,14 @@ enum tokenType{
     t_semicolon, t_left_parenthesis, t_right_parenthesis,
 };
 void init_scanner();
-void lex_error(char* msg, int line);
-void print_token(int token);
 %}
 
 /* Definitions */
 INTEGER             ([0-9]+)
-LETTER          ([_a-zA-Z][_a-zA-Z0-9]*)
-WC      [A-Za-z]
-NW      [^A-Za-z]
-%start      INW NIW
+LETTER          ([a-zA-Z][a-zA-Z0-9]*)
 
 
 %%
-
-
-{WC}  { BEGIN INW; REJECT; }
-{NW}  { BEGIN NIW; REJECT; }
 
 [\n]                { cur_line_num++; /* 忽略换行符 */        }
 [ \t\r\a]+          { /* 忽略空格符 */               }
