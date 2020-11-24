@@ -1,6 +1,8 @@
 #include <string>
 #include <iostream>
 #include <fstream>
+
+using namespace std;
 const int block_time=10; //定义时间片的长度为10秒
 const int MAXPCB=10; //定义最大进程数
  
@@ -17,7 +19,6 @@ typedef struct node {
 } pcb;
  
 pcb pcbs[MAXPCB];
-int count;  // 输入进程的数量
  
 //初始化函数
 void initial() {
@@ -32,8 +33,6 @@ void initial() {
         pcbs[i].finished=0;
         pcbs[i].wait_time=0;
     }
- 
-    count=0;
 }
  
 
@@ -43,7 +42,7 @@ void inputData(){
     scanf("%d", &n);
 
     fstream file;
-    file.open("job.dat", ios::out | ios::binary | ios::trunc );
+    file.open("process.dat", ios::out | ios::binary | ios::trunc );
     if (!file)
     {
         //handle the error
@@ -53,42 +52,27 @@ void inputData(){
     int h, m;
     for (int i = 0; i < n; i++)
     {
-        printf("输入作业的名字\n");
-        scanf("%s", pcds[i].name);
-        printf("输入作业进入的时间\n");
-        scanf("%d:%d", &h, &m);
-        list[i].Ctime = h * 60 + m;
-        printf("输入作业运行的时间\n");
-        scanf("%d", &list[i].Rtime);
-        file.write((char *)&list[i], sizeof(list[i]));
+        printf("输入进程的名字\n");
+        scanf("%s", pcbs[i].name);
+        file<<pcbs[i].name<<" "<<pcbs[i].status<<" ";
+        // printf("输入作业进入的时间\n");
+        // scanf("%d:%d", &h, &m);
+        // pcbs[i].time = h * 60 + m;
+        // file<<pcbs[i].time;
+        printf("输入进程运行的时间\n");
+        scanf("%d", &pcbs[i].time);
+        file<<pcbs[i].time<<" ";
+        
+        printf("输入进程的优先级\n");
+        scanf("%d", &pcbs[i].privilege);
+        file<<pcbs[i].privilege;
     }
     // save data
     file.close();
 }
 
-void readFromFile(){
-    fstream file;
-    file.open("job.dat", ios::in | ios::binary);
-    // get length of file
-    file.seekg(0, file.end);
-    int length = file.tellg();
-    // printf("%d\n", length);
-    file.seekg(0, file.beg);
-
-    int n = length/sizeof(work);
-    // printf("%d\n", n);
-    vector<work> list;
-    for(int i = 0; i < n; i++){
-        work item;
-        file.read((char*)&item, sizeof(item));
-        list.push_back(item);
-    }
-
-    file.close();
-
-    chooseAlgorithm(list);
-}
-
 int main(){
-
+    initial();
+    inputData();
+    return 0;
 }

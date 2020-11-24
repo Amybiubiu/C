@@ -1,6 +1,9 @@
 #include <string>
 #include <iostream>
+#include <stdio.h>
+#include <stdlib.h>
  
+using namespace std;
 const int block_time=10; //定义时间片的长度为10秒
 const int MAXPCB=10; //定义最大进程数
  
@@ -17,7 +20,7 @@ typedef struct node {
 } pcb;
  
 pcb pcbs[MAXPCB];
-int count;  // 输入进程的数量
+int number = 0;  // 输入进程的数量
  
 //初始化函数
 void initial() {
@@ -33,30 +36,30 @@ void initial() {
         pcbs[i].wait_time=0;
     }
  
-    count=0;
+    number=0;
 }
  
 //读数据函数
 int readData() {
     FILE *fp;
-    char fname[20];
+    // char fname[20];
     int i;
  
-    cout<<"请输入进程流文件名:";
-    cin>>fname;
-    if ( ( fp=fopen ( fname,"r" ) ) ==NULL ) {
+    // cout<<"请输入进程流文件名:";
+    // cin>>fname;
+    if ( ( fp=fopen ("process.dat" ,"r" ) ) ==NULL ) {
         cout<<"错误,文件打不开,请检查文件名"<<endl;
     } else {
         while ( !feof ( fp ) ) {
-            fscanf ( fp,"%s %d %d %d",pcbs[count].name,&pcbs[count].status,&pcbs[count].time,&pcbs[count].privilege );
-            count++;
+            fscanf ( fp,"%s %d %d %d",pcbs[number].name,&pcbs[number].status,&pcbs[number].time,&pcbs[number].privilege );
+            number++;
         }
  
 //输出所读入的数据
         cout<<"输出所读入的数据"<<endl;
         cout<<"进程名 进程状态 所需时间 优先数"<<endl;
-        for ( i=0; i<count; i++ ) {
-            cout<<" "<<pcbs[i].name<<" "<<pcbs[i].status<<" "<<pcbs[i].time<<" "<<pcbs[i].privilege<<endl;
+        for ( i=0; i<number; i++ ) {
+            cout<<" "<<pcbs[i].name<<"     "<<pcbs[i].status<<"     "<<pcbs[i].time<<"       "<<pcbs[i].privilege<<endl;
         }
         return ( 1 );
     }
@@ -85,16 +88,16 @@ void FIFO() {
     cout<<endl<<"---------------------------------------------------------------"<<endl;
     cout<<"FIFO算法执行流:"<<endl;
     cout<<"进程名 等待时间"<<endl;
-    for ( i=0; i<count; i++ ) {
+    for ( i=0; i<number; i++ ) {
         cout<<" "<<pcbs[i].name<<" "<<pcbs[i].wait_time<<endl;
-        if(i+1 < count)
+        if(i+1 < number)
             pcbs[i+1].wait_time = pcbs[i].wait_time + pcbs[i].time;
     }
     total=0;
-    for ( i=0; i<count; i++ ) {
+    for ( i=0; i<number; i++ ) {
         total+=pcbs[i].wait_time;
     }
-    cout<<"总等待时间:"<<total<<" 平均等待时间:"<<total/count<<endl;
+    cout<<"总等待时间:"<<total<<" 平均等待时间:"<<total/number<<endl;
  
 }
  
@@ -107,9 +110,9 @@ void privilege() {
     int queue[MAXPCB];
     int current_privilege=1000;
  
-    for ( i=0; i<count; i++ ) {
+    for ( i=0; i<number; i++ ) {
         current_privilege=1000;
-        for ( j=0; j<count; j++ ) {
+        for ( j=0; j<number; j++ ) {
             if ( ( pcbs[j].finished==0 ) && ( pcbs[j].privilege<current_privilege ) ) {
                 p=j;
                 current_privilege=pcbs[j].privilege;
@@ -125,15 +128,15 @@ void privilege() {
     cout<<endl<<"---------------------------------------------------------------"<<endl;
     cout<<"优先数调度执行流:"<<endl;
     cout<<"进程名 等待时间"<<endl;
-    for ( i=0; i<count; i++ ) {
+    for ( i=0; i<number; i++ ) {
         cout<<" "<<pcbs[queue[i]].name<<" "<<pcbs[queue[i]].wait_time<<endl;
     }
  
     total=0;
-    for ( i=0; i<count; i++ ) {
+    for ( i=0; i<number; i++ ) {
         total+=pcbs[i].wait_time;
     }
-    cout<<"总等待时间:"<<total<<" 平均等待时间:"<<total/count<<endl;
+    cout<<"总等待时间:"<<total<<" 平均等待时间:"<<total/number<<endl;
  
 }
  
@@ -151,7 +154,7 @@ void timer() {
         flag=0;
         number=0;
  
-        for ( i=0; i<count; i++ ) {
+        for ( i=0; i<number; i++ ) {
             if ( pcbs[i].finished==0 ) {
                 number++;
                 j=i;
@@ -166,7 +169,7 @@ void timer() {
  
         if ( number>1 ) {
  
-            for ( i=0; i<count; i++ ) {
+            for ( i=0; i<number; i++ ) {
                 if ( pcbs[i].finished==0 ) {
                     flag=1;
                     queue[total]=i;
@@ -194,7 +197,7 @@ void timer() {
 }
  
 //主函数
-void main() {
+int main() {
     initial();
     if ( readData() ) {
         FIFO();
@@ -205,4 +208,5 @@ void main() {
  
         timer();
     }
+    return 0;
 }
