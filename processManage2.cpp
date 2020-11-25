@@ -107,9 +107,12 @@ void privilege() {
     int passed_time=0;
     int total;
  
-    int queue[MAXPCB];
+    
     int current_privilege=1000;
  
+    cout<<endl<<"---------------------------------------------------------------"<<endl;
+    cout<<"优先数调度执行流:"<<endl;
+    cout<<"进程名 等待时间"<<endl;
     for ( i=0; i<number; i++ ) {
         current_privilege=1000;
         for ( j=0; j<number; j++ ) {
@@ -118,19 +121,13 @@ void privilege() {
                 current_privilege=pcbs[j].privilege;
             }
         }
-        queue[i]=p;
         pcbs[p].finished=1;
         pcbs[p].wait_time+=passed_time;
         passed_time+=pcbs[p].time;
+        cout<<" "<<pcbs[p].name<<" "<<pcbs[p].wait_time<<endl;  //输出优先数调度执行流
+
     }
- 
-//输出优先数调度执行流
-    cout<<endl<<"---------------------------------------------------------------"<<endl;
-    cout<<"优先数调度执行流:"<<endl;
-    cout<<"进程名 等待时间"<<endl;
-    for ( i=0; i<number; i++ ) {
-        cout<<" "<<pcbs[queue[i]].name<<" "<<pcbs[queue[i]].wait_time<<endl;
-    }
+
  
     total=0;
     for ( i=0; i<number; i++ ) {
@@ -142,7 +139,7 @@ void privilege() {
  
 //时间片轮转调度算法
 void timer() {
-    int i,j,number,flag=1;
+    int i,j,num,flag=1;
     int passed_time=0;
     int max_time=0;
     int round=0;
@@ -152,22 +149,22 @@ void timer() {
  
     while ( flag==1 ) {
         flag=0;
-        number=0;
+        num=0;
  
         for ( i=0; i<number; i++ ) {
             if ( pcbs[i].finished==0 ) {
-                number++;
+                num++;
                 j=i;
             }
         }
  
-        if ( number==1 ) {
+        if ( num==1 ) {
             queue[total]=j;
             total++;
             pcbs[j].finished=1;
         }
  
-        if ( number>1 ) {
+        if ( num>1 ) {
  
             for ( i=0; i<number; i++ ) {
                 if ( pcbs[i].finished==0 ) {
