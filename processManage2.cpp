@@ -2,7 +2,8 @@
 #include <iostream>
 #include <stdio.h>
 #include <stdlib.h>
- 
+#include <vector> 
+
 using namespace std;
 const int block_time=10; //定义时间片的长度为10秒
 const int MAXPCB=10; //定义最大进程数
@@ -138,61 +139,46 @@ void privilege() {
 }
  
 //时间片轮转调度算法
-void timer() {
-    int i,j,num,flag=1;
-    int passed_time=0;
-    int max_time=0;
-    int round=0;
- 
-    int queue[1000];
-    int total=0;
- 
-    while ( flag==1 ) {
-        flag=0;
-        num=0;
- 
-        for ( i=0; i<number; i++ ) {
-            if ( pcbs[i].finished==0 ) {
-                num++;
-                j=i;
-            }
-        }
- 
-        if ( num==1 ) {
-            queue[total]=j;
-            total++;
-            pcbs[j].finished=1;
-        }
- 
-        if ( num>1 ) {
- 
-            for ( i=0; i<number; i++ ) {
-                if ( pcbs[i].finished==0 ) {
-                    flag=1;
-                    queue[total]=i;
-                    total++;
-                    if ( pcbs[i].time<=block_time* ( round+1 ) ) {
-                        pcbs[i].finished=1;
-                    }
+void timer(){
+    int round = 0; // process上cpu的最多次数
+    vector<int> remain_time(number, 0);  // 记录还需执行的时间长度
+    // vector<char*> record(number);
+    int max_time = pcbs[0].time;
+    int passed_time = 0;
+    for(int i = 0; i < number; i++){
+        remain_time[i] = pcbs[i].time;
+        if(pcbs[i].time > max_time)
+            max_time = pcbs[i].time;
+    }
+    round = max_time / block_time + 1;
+    for(int i = 0; i < round; i++){
+        for(int j = 0; j < number; j++){
+            if(!pcbs[j].finished){
+                // record.push_back(pcbs[i].name);
+                cout<<pcbs[j].name<<" ";
+                if(remain_time[j] <= 10){
+                    // to be finished
+                    pcbs[j].finished = 1;
+                    passed_time += remain_time[j];
+                    remain_time[j] = 0; 
+                    pcbs[j].wait_time = passed_time - pcbs[j].time;
+                }else{
+                    passed_time += 10;
+                    remain_time[j] -= 10;
                 }
             }
         }
-        round++;
     }
- 
-    if ( queue[total-1]==queue[total-2] ) {
-        total--;
+    cout << "\n进程名 等待时间" << endl;
+    int total = 0;
+    for (int i = 0; i < number; i++)
+    {
+        cout << " " << pcbs[i].name << " " << pcbs[i].wait_time << endl;
+        total += pcbs[i].wait_time;
     }
- 
-    cout<<endl<<"---------------------------------------------------------------"<<endl;
-    cout<<"时间片轮转调度执行流:";
-    for ( i=0; i<total; i++ ) {
-        cout<<pcbs[queue[i]].name<<" ";
-    }
- 
- 
+    cout << "总等待时间:" << total << " 平均等待时间:" << total / number << endl;
 }
- 
+
 //主函数
 int main() {
     initial();
