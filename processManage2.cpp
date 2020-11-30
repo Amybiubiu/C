@@ -150,6 +150,9 @@ void timer(){
         if(pcbs[i].time > max_time)
             max_time = pcbs[i].time;
     }
+    // 如果最大值非常大 后面的几个循环没有必要 怎么处理
+    // 建立一个queue，执行完毕后移出
+    // 每次遍历queue而不是 pcbs。这样也可以把pcbs[i].finished flag去除
     round = max_time / block_time + 1;
     for(int i = 0; i < round; i++){
         for(int j = 0; j < number; j++){
