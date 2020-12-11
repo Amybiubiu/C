@@ -665,3 +665,4 @@ int main(){
     }
     return 0;
 }
+// run: g++ geneticAlgorithm.cpp benchmark.cpp -o GA && ./GA
