@@ -5,19 +5,15 @@
 #include <time.h> 
 
 // Parametes setting
-#define POPSIZE 50 
-//population size
 
-#define MAXGENS 10000
-//max number of generation
-#define NVARS 2
-//no of problem variables
+#define POPSIZE 50      //population size
 
-#define PXOVER 0.75
-//probability of crossover
+#define MAXGENS 10000   //max number of generation
 
-#define PMUTATION 0.15
-//probability of mutation
+#define NVARS 10     //no of problem variables
+#define PXOVER 0.75     //probability of crossover
+
+#define PMUTATION 0.15  //probability of mutation
 #define TRUE 1
 #define FALSE 0
 
@@ -94,6 +90,8 @@ void mutate(void);
 
 void report(void);
 
+double function(double *);
+
 //********************************************************************************* //Initialization function: Initializes the values of genes within the variables
 
 //bounds. It also initializes all fitness values for each number of the population
@@ -112,9 +110,9 @@ void initialize(void)
 
     {
 
-        lbound = -5.0;  // 变量范围，左值
+        lbound = -100.0;  // 变量范围，左值
 
-        ubound = 5.0;   // 变量范围，右值
+        ubound = 100.0;   // 变量范围，右值
 
         for (j = 0; j < POPSIZE; j++)
 
@@ -180,8 +178,15 @@ void evaluate(void)
 
             x[i + 1] = population[mem].gene[i];
 
-        population[mem].fitness = (x[1] * x[1]) - (x[1] * x[2]) + 10;   // 选优函数
+        population[mem].fitness = function(x);   // 选优函数
     }
+}
+double function (double* x)
+{
+    double value = 0;
+	for(int i=0; i< NVARS; i++)
+		value += x[i]*x[i];
+	return value;
 }
 
 //****************************************************************************
@@ -568,8 +573,10 @@ void report(void)
     fprintf(galog, "\n%5d,	%6.3f,%6.3f,%6.3f\n\n", generation, best_val, avg, stddev);
 }
 
-//**************************************************************************** //Main function: Each generation involves selecting the best members, performing //crossover & mutation and then evaluating the resulting population,until the //terminating condition is satisfied.
-
+//**************************************************************************** 
+//Main function: Each generation involves selecting the best members, performing 
+//crossover & mutation and then evaluating the resulting population,until the 
+//terminating condition is satisfied.
 //****************************************************************************
 
 int main(void)
@@ -602,19 +609,12 @@ int main(void)
     while (generation < MAXGENS)
 
     {
-
         generation++;
-
         select();
-
         crossover();
-
         mutate();
-
-        report();
-
-        evaluate();
-
+        report();          
+        evaluate();          
         elitist();
     }
 
