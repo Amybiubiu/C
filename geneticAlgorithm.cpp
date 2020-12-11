@@ -68,11 +68,11 @@ struct genotype newpopulation[POPSIZE + 1];
 
 /*Declaration of procedures used by the gentic algorithm*/
 
-void initialize(void);
+void initialize(double, double);
 
 double randval(double, double);
 
-void evaluate(void);
+void evaluate(double (*f)(double *));
 
 void keep_the_best(void);
 
@@ -98,21 +98,21 @@ double function(double *);
 
 //*********************************************************************************
 
-void initialize(void)
+void initialize(double lbound, double ubound)
 
 {
 
     int i, j;
 
-    double lbound, ubound;
+    // double lbound, ubound;
 
     for (i = 0; i < NVARS; i++)
 
     {
 
-        lbound = -100.0;  // 变量范围，左值
+        // lbound = -100.0;  // 变量范围，左值
 
-        ubound = 100.0;   // 变量范围，右值
+        // ubound = 100.0;   // 变量范围，右值
 
         for (j = 0; j < POPSIZE; j++)
 
@@ -160,7 +160,7 @@ double randval(double low, double high)
 
 //****************************************************************************
 
-void evaluate(void)
+void evaluate(double (*f)(double *))
 
 {
 
@@ -178,7 +178,7 @@ void evaluate(void)
 
             x[i + 1] = population[mem].gene[i];
 
-        population[mem].fitness = function(x);   // 选优函数
+        population[mem].fitness = f(x);   // 选优函数
     }
 }
 double function (double* x)
@@ -579,7 +579,7 @@ void report(void)
 //terminating condition is satisfied.
 //****************************************************************************
 
-int main(void)
+int main_helper(double l_bound, double r_bound, double (*f)(double *))
 
 {
 
@@ -600,9 +600,9 @@ int main(void)
 
     printf("\n generation best average standard\n");
 
-    initialize();
+    initialize(l_bound, r_bound);
 
-    evaluate();
+    evaluate((*f));
 
     keep_the_best();
 
@@ -614,7 +614,7 @@ int main(void)
         crossover();
         mutate();
         report();          
-        evaluate();          
+        evaluate(function);          
         elitist();
     }
 
@@ -637,5 +637,10 @@ int main(void)
 
     printf("\n\n Best fitness=%3.3f\n", population[POPSIZE].fitness);
     printf("Success\n");
+    return 0;
+}
+
+int main(){
+    main_helper(-100.00, 100.00, function);
     return 0;
 }
