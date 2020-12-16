@@ -11,7 +11,7 @@ private:
     NUM chartNum;//用户给定的说明表行数
     NUM (*chartPtr)[chartItemNum]=NULL;//动态数组指针
     NUM chart[MaxNum][chartItemNum];//定义说明表
-    vector<pair<int, int>> runtimeTable;//
+    vector<pair<int, int> > runtimeTable;//
 public:
     romTest(NUM rS,NUM cS);//构造函数
     void run();//运行
@@ -58,15 +58,16 @@ void romTest::insert(NUM spaceNum){
     //判断当前说明表项中是否有足够空间
         if (chartPtr[i][1]>spaceNum) {
             //对于有足够空间的说明项来说，判断插入后是否能占用其他表项
-            runtimeTable.push_back({chartPtr[i][0],spaceNum});
-            chartPtr[i][0]=chartPtr[i][0]+spaceNum;
+            runtimeTable.push_back(make_pair(chartPtr[i][0],spaceNum));  // runtimeTable 记录内存的使用
+            chartPtr[i][0]=chartPtr[i][0]+spaceNum; // chart 记录空块
             chartPtr[i][1]=chartPtr[i][1]-spaceNum;
             key=true;
             break;
         }else if(chartPtr[i][1]==spaceNum){
             //对于有足够空间的说明项来说，判断插入后是否能替代其他表项
-            runtimeTable.push_back({chartPtr[i][0],spaceNum});
-            chartPtr[i][0]=chartPtr[i][1]=chartPtr[i][2]=0;
+            runtimeTable.push_back(make_pair(chartPtr[i][0],spaceNum));
+            // 表项中第一个是起始地址 第二个是大小 第三个是使用情况
+            chartPtr[i][0]=chartPtr[i][1]=chartPtr[i][2]=0; //chart 数据中有的时候会出现空item
             key=true;
             break;
         }
@@ -158,6 +159,7 @@ void romTest::display(){
                 cout<<chartPtr[i][j];
             }else{
                 if (chartPtr[i][2]==1) {
+                    // 1 代表为空块 内存未使用
                     cout<<"empty block";
                 }else{
                     cout<<"empty chart";
