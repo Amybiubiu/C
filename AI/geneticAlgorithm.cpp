@@ -179,7 +179,7 @@ void evaluate(double (*f)(double *))
 
             x[i + 1] = population[mem].gene[i];
 
-        population[mem].fitness = f(x);   // 选优函数
+        population[mem].fitness = - f(x);   // 选优函数
     }
 }
 double function (double* x)
@@ -636,7 +636,9 @@ int main_helper(double l_bound, double r_bound, double (*f)(double *))
     fprintf(galog, "\n\n Best fitness=%3.3f", population[POPSIZE].fitness);
     fclose(galog);
 
-    printf("\n\n Best fitness=%3.3f\n", population[POPSIZE].fitness);
+    double res = 0 - population[POPSIZE].fitness;
+    // printf("\n\n Best fitness=%3.3f\n", population[POPSIZE].fitness);
+    printf("\n\n Best fitness=%3.3f\n", res);
     printf("Success\n");
     return 0;
 }
@@ -646,18 +648,61 @@ int main(){
     double UPBOUND[21] = {100,10,100,100,30,100,1.28,500,5.12,32,600,50,50};
 
 
-    for(int i = 0; i < 3; i++){
+    for(int i = 0; i < 13; i++){
         switch (i)
         {
         case 0:
             /* code */
+            printf("\n第%d个函数", i+1);
             main_helper(LOWBOUND[i], UPBOUND[i], F1);
             break;
         case 1:
+            printf("\n第%d个函数", i+1);
             main_helper(LOWBOUND[i], UPBOUND[i], F2);
             break;
         case 2:
+            printf("\n第%d个函数", i+1);
             main_helper(LOWBOUND[i], UPBOUND[i], F3);
+            break;
+        case 3:
+            printf("\n第%d个函数", i+1);
+            main_helper(LOWBOUND[i], UPBOUND[i], F4);
+            break;
+        case 4:
+            printf("\n第%d个函数", i+1);
+            main_helper(LOWBOUND[i], UPBOUND[i], F5);
+            break;
+        case 5:
+            printf("\n第%d个函数", i+1);
+            main_helper(LOWBOUND[i], UPBOUND[i], F6);
+            break;
+        case 6:
+            printf("\n第%d个函数", i+1);
+            main_helper(LOWBOUND[i], UPBOUND[i], F7);
+            break;
+        case 7:
+            printf("\n第%d个函数", i+1);
+            main_helper(LOWBOUND[i], UPBOUND[i], F8);
+            break;
+        case 8:
+            printf("\n第%d个函数", i+1);
+            main_helper(LOWBOUND[i], UPBOUND[i], F9);
+            break;
+        case 9:
+            printf("\n第%d个函数", i+1);
+            main_helper(LOWBOUND[i], UPBOUND[i], F10);
+            break;
+        case 10:
+            printf("\n第%d个函数", i+1);
+            main_helper(LOWBOUND[i], UPBOUND[i], F11);
+            break;
+        case 11:
+            printf("\n第%d个函数", i+1);
+            main_helper(LOWBOUND[i], UPBOUND[i], F12);
+            break;
+        case 12:
+            printf("\n第%d个函数", i+1);
+            main_helper(LOWBOUND[i], UPBOUND[i], F13);
             break;
         default:
             break;

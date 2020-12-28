@@ -58,4 +58,5 @@ int main(){
     vector<int> pages(arr, arr+12);
     FIFO(pages);
     LRU(pages);
+    return 0;
 }

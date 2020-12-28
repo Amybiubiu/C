@@ -46,6 +46,8 @@ void first(vector<int>& prcs){
     display();
     display_allocate();
     allocate_table.clear();
+    item_table.clear();
+    init();
 }
 
 void best(vector<int>& prcs){
@@ -73,7 +75,9 @@ void best(vector<int>& prcs){
     cout<<"------最佳适应算法-------"<<endl;
     display();
     display_allocate();
+    item_table.clear();
     allocate_table.clear();
+    init();
 }
 void bad(vector<int>& prcs){
     int n = prcs.size();
@@ -101,13 +105,15 @@ void bad(vector<int>& prcs){
     display();
     display_allocate();
     allocate_table.clear();
+    item_table.clear();
+    init();
 }
 int main(){
     int arr[5] = {80, 30, 28, 10, 10};
     vector<int> prcs(arr, arr+5);
     init();
-    // first(prcs);
-    // best(prcs);
+    first(prcs);
+    best(prcs);
     bad(prcs);
     return 0;
 }
