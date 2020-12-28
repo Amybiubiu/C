@@ -1,6 +1,7 @@
 %{
 #include <stdio.h>
 void yyerror(const char* msg) {}
+int yylex();
 %}
 
 %token T_NUM

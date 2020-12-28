@@ -1,6 +1,6 @@
 OBJ = y.tab.c lex.yy.c
 run: tcc
-	./tcc < grammarTest.txt
+	./tcc
 
 tcc: $(OBJ)
 	gcc -o $@ $(OBJ)

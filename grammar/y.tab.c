@@ -80,6 +80,7 @@
 
 #include <stdio.h>
 void yyerror(const char* msg) {}
+int yylex();
 
 
 /* Enabling traces.  */
@@ -113,7 +114,7 @@ typedef int YYSTYPE;
 
 
 /* Line 216 of yacc.c.  */
-#line 117 "y.tab.c"
+#line 118 "y.tab.c"
 
 #ifdef short
 # undef short
@@ -396,7 +397,7 @@ static const yytype_int8 yyrhs[] =
 /* YYRLINE[YYN] -- source line where rule number YYN was defined.  */
 static const yytype_uint8 yyrline[] =
 {
-       0,    13,    13,    14,    17,    18,    19,    20,    21,    22
+       0,    14,    14,    15,    18,    19,    20,    21,    22,    23
 };
 #endif
 
@@ -1301,48 +1302,48 @@ yyreduce:
   switch (yyn)
     {
         case 2:
-#line 13 "grammar.y"
+#line 14 "grammar.y"
     { printf("ans = %d\n", (yyvsp[(2) - (3)])); }
     break;
 
   case 3:
-#line 14 "grammar.y"
+#line 15 "grammar.y"
     { /* empty */ }
     break;
 
   case 4:
-#line 17 "grammar.y"
+#line 18 "grammar.y"
     { (yyval) = (yyvsp[(1) - (3)]) + (yyvsp[(3) - (3)]); }
     break;
 
   case 5:
-#line 18 "grammar.y"
+#line 19 "grammar.y"
     { (yyval) = (yyvsp[(1) - (3)]) - (yyvsp[(3) - (3)]); }
     break;
 
   case 6:
-#line 19 "grammar.y"
+#line 20 "grammar.y"
     { (yyval) = (yyvsp[(1) - (3)]) * (yyvsp[(3) - (3)]); }
     break;
 
   case 7:
-#line 20 "grammar.y"
+#line 21 "grammar.y"
     { (yyval) = (yyvsp[(1) - (3)]) / (yyvsp[(3) - (3)]); }
     break;
 
   case 8:
-#line 21 "grammar.y"
+#line 22 "grammar.y"
     { (yyval) = (yyvsp[(1) - (1)]); }
     break;
 
   case 9:
-#line 22 "grammar.y"
+#line 23 "grammar.y"
     { (yyval) = (yyvsp[(2) - (3)]); }
     break;
 
 
 /* Line 1267 of yacc.c.  */
-#line 1346 "y.tab.c"
+#line 1347 "y.tab.c"
       default: break;
     }
   YY_SYMBOL_PRINT ("-> $$ =", yyr1[yyn], &yyval, &yyloc);
@@ -1556,7 +1557,7 @@ yyreturn:
 }
 
 
-#line 25 "grammar.y"
+#line 26 "grammar.y"
 
 
 int main() {
