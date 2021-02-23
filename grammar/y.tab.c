@@ -1303,7 +1303,7 @@ yyreduce:
     {
         case 2:
 #line 14 "grammar.y"
-    { printf("ans = %d\n", (yyvsp[(2) - (3)])); }
+    { printf("\nans = %d\n", (yyvsp[(2) - (3)])); }
     break;
 
   case 3:
@@ -1313,22 +1313,22 @@ yyreduce:
 
   case 4:
 #line 18 "grammar.y"
-    { (yyval) = (yyvsp[(1) - (3)]) + (yyvsp[(3) - (3)]); }
+    { (yyval) = (yyvsp[(1) - (3)]) + (yyvsp[(3) - (3)]); printf("\n%d = %d + %d", (yyval), (yyvsp[(1) - (3)]), (yyvsp[(3) - (3)]));}
     break;
 
   case 5:
 #line 19 "grammar.y"
-    { (yyval) = (yyvsp[(1) - (3)]) - (yyvsp[(3) - (3)]); }
+    { (yyval) = (yyvsp[(1) - (3)]) - (yyvsp[(3) - (3)]); printf("\n%d = %d - %d", (yyval), (yyvsp[(1) - (3)]), (yyvsp[(3) - (3)]));}
     break;
 
   case 6:
 #line 20 "grammar.y"
-    { (yyval) = (yyvsp[(1) - (3)]) * (yyvsp[(3) - (3)]); }
+    { (yyval) = (yyvsp[(1) - (3)]) * (yyvsp[(3) - (3)]); printf("\n%d = %d * %d", (yyval), (yyvsp[(1) - (3)]), (yyvsp[(3) - (3)]));}
     break;
 
   case 7:
 #line 21 "grammar.y"
-    { (yyval) = (yyvsp[(1) - (3)]) / (yyvsp[(3) - (3)]); }
+    { (yyval) = (yyvsp[(1) - (3)]) / (yyvsp[(3) - (3)]); printf("\n%d = %d / %d", (yyval), (yyvsp[(1) - (3)]), (yyvsp[(3) - (3)]));}
     break;
 
   case 8:
